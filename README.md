@@ -2,7 +2,7 @@
 
 vivid LS_COLORS for Zsh — Catppuccin theming and automatic theme synchronization.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![test](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml/badge.svg)](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml)
 
 Give your file listings a consistent look across every tool that respects `LS_COLORS`. `zsh-vivid` generates and exports `LS_COLORS` via [vivid](https://github.com/sharkdp/vivid), picks up the active Catppuccin or custom theme automatically, and stays in sync with zsh-fzf and zsh-eza with zero extra configuration.
 
