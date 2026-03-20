@@ -1,6 +1,6 @@
 # zsh-vivid
 
-vivid LS_COLORS for Zsh — Catppuccin theming and automatic theme synchronization.
+> vivid LS_COLORS for Zsh — Catppuccin theming and automatic theme synchronization.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![test](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml/badge.svg)](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml)
 
