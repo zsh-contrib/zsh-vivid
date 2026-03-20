@@ -1,17 +1,26 @@
 # zsh-vivid
 
-A Zsh plugin for [vivid](https://github.com/sharkdp/vivid) integration that generates and exports `LS_COLORS` with theme support.
+vivid LS_COLORS for Zsh — Catppuccin theming and automatic theme synchronization.
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-- Automatic `LS_COLORS` generation using vivid
-- Catppuccin theme support (and all vivid themes)
-- Theme synchronization with other zsh-contrib plugins
-- Zero configuration required
+Give your file listings a consistent look across every tool that respects `LS_COLORS`. `zsh-vivid` generates and exports `LS_COLORS` via [vivid](https://github.com/sharkdp/vivid), picks up the active Catppuccin or custom theme automatically, and stays in sync with zsh-fzf and zsh-eza with zero extra configuration.
 
 ## Requirements
 
-- [vivid](https://github.com/sharkdp/vivid) - LS_COLORS generator
+- [vivid](https://github.com/sharkdp/vivid) (`vivid`)
+
+**macOS (Homebrew):**
+
+```bash
+brew install vivid
+```
+
+**Nix:**
+
+```bash
+nix profile install nixpkgs#vivid
+```
 
 ## Installation
 
@@ -45,116 +54,76 @@ Set `VIVID_THEME` before loading the plugin:
 export VIVID_THEME="catppuccin-mocha"  # default
 ```
 
-### Theme Fallback
+### Theme Resolution Order
 
-The plugin resolves themes in this order:
-
-1. `VIVID_THEME` - if explicitly set
-2. `FZF_THEME` - for consistency with zsh-fzf
-3. `catppuccin-mocha` - default fallback
+1. `VIVID_THEME` — if explicitly set
+2. `FZF_THEME` — for consistency with zsh-fzf
+3. `catppuccin-mocha` — default fallback
 
 ### Available Themes
 
-Run `vivid themes` to see all available themes. Common options:
+Run `vivid themes` to list all themes. Commonly used:
 
 | Theme | Description |
 |-------|-------------|
 | `catppuccin-latte` | Light Catppuccin theme |
 | `catppuccin-frappe` | Dark Catppuccin (soft) |
 | `catppuccin-macchiato` | Dark Catppuccin (medium) |
-| `catppuccin-mocha` | Dark Catppuccin (deep) - default |
+| `catppuccin-mocha` | Dark Catppuccin (deep) — default |
 | `molokai` | Molokai color scheme |
-| `snazzy` | Snazzy color scheme |
 | `one-dark` | One Dark theme |
 | `nord` | Nord color scheme |
 
-## API Reference
+## Usage
 
-### Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VIVID_THEME` | `catppuccin-mocha` | Theme for color generation |
-| `LS_COLORS` | (generated) | File type color configuration |
-
-### Generated Output
-
-The plugin exports `LS_COLORS` which is used by:
-
-- `ls --color=auto`
-- `tree`
-- `fd`
-- `exa` / `eza`
-- Most file listing utilities
-
-## Usage Examples
-
-### Basic Usage
+### Basic
 
 ```zsh
-# Just load the plugin - uses default theme
+# Just load the plugin — uses default theme
 zinit load zsh-contrib/zsh-vivid
-
-# ls now shows colored output
-ls --color=auto
 ```
+
+`LS_COLORS` is generated once at load time and picked up by `ls`, `tree`, `fd`, `eza`, and any other tool that reads it.
 
 ### Theme Synchronization
 
 ```zsh
-# Use same theme across plugins
+# Share a theme across plugins
 export FZF_THEME="catppuccin-macchiato"
-export VIVID_THEME="$FZF_THEME"
 
 zinit load zsh-contrib/zsh-fzf
-zinit load zsh-contrib/zsh-vivid
+zinit load zsh-contrib/zsh-vivid   # picks up FZF_THEME automatically
 ```
 
 ### Conditional Loading
 
 ```zsh
-# Only load if vivid is installed
 if (( $+commands[vivid] )); then
   zinit load zsh-contrib/zsh-vivid
 fi
 ```
 
-## Directory Structure
-
-```
-zsh-vivid/
-├── zsh-vivid.plugin.zsh   # Main entry point
-├── zsh-vivid.config.zsh   # Theme configuration and LS_COLORS generation
-├── README.md
-└── LICENSE
-```
-
 ## Troubleshooting
 
-### Colors not showing
+**Colors not showing** — ensure your terminal supports 256 colors (`echo $TERM` should be `xterm-256color` or similar)
 
-Ensure your terminal supports 256 colors or true color:
+**Theme not found** — list available themes with `vivid themes`
 
-```zsh
-echo $TERM  # Should be xterm-256color or similar
-```
+**Changing themes** — `LS_COLORS` is generated at load time; reload your shell after switching: `exec zsh`
 
-### Theme not found
+## The zsh-contrib Ecosystem
 
-List available themes:
-
-```zsh
-vivid themes
-```
-
-### Performance
-
-LS_COLORS is generated once at plugin load time. If you change themes, reload your shell:
-
-```zsh
-exec zsh
-```
+| Repo | What it provides |
+|------|-----------------|
+| [zsh-aws](https://github.com/zsh-contrib/zsh-aws) | AWS credential management with aws-vault and tmux |
+| [zsh-eza](https://github.com/zsh-contrib/zsh-eza) | eza with Catppuccin and Rose Pine theming |
+| [zsh-fzf](https://github.com/zsh-contrib/zsh-fzf) | fzf with Catppuccin and Rose Pine theming |
+| [zsh-op](https://github.com/zsh-contrib/zsh-op) | 1Password CLI with secure caching and SSH key management |
+| [zsh-tmux](https://github.com/zsh-contrib/zsh-tmux) | Automatic tmux window title management |
+| **zsh-vivid** ← you are here | vivid LS_COLORS generation with theme support |
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) for details.
+[MIT](LICENSE) — Copyright (c) 2025 zsh-contrib
+
+<!-- markdownlint-disable-file MD013 -->
