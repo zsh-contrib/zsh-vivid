@@ -1,10 +1,10 @@
 # zsh-vivid
 
-> vivid LS_COLORS for Zsh — Catppuccin theming and automatic theme synchronization.
+> vivid LS_COLORS for Zsh — Catppuccin theming with automatic light/dark detection.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![test](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml/badge.svg)](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml)
 
-Give your file listings a consistent look across every tool that respects `LS_COLORS`. `zsh-vivid` generates and exports `LS_COLORS` via [vivid](https://github.com/sharkdp/vivid), picks up the active Catppuccin or custom theme automatically, and stays in sync with zsh-fzf and zsh-eza with zero extra configuration.
+Give your file listings a consistent look across every tool that respects `LS_COLORS`. `zsh-vivid` generates and exports `LS_COLORS` via [vivid](https://github.com/sharkdp/vivid), with automatic light/dark theme detection for tmux sessions and support for custom Catppuccin and other themes.
 
 ## Requirements
 
@@ -54,11 +54,24 @@ Set `VIVID_THEME` before loading the plugin:
 export VIVID_THEME="catppuccin-mocha"  # default
 ```
 
+### Automatic Light/Dark Detection
+
+When inside a **tmux session**, the plugin automatically detects the session's light/dark theme and applies the appropriate color scheme:
+
+```zsh
+export VIVID_THEME_LIGHT="catppuccin-latte"   # used in light tmux theme
+export VIVID_THEME_DARK="catppuccin-mocha"    # used in dark tmux theme
+```
+
+If you set `VIVID_THEME` explicitly, it takes precedence and light/dark detection is skipped.
+
 ### Theme Resolution Order
 
-1. `VIVID_THEME` — if explicitly set
-2. `FZF_THEME` — for consistency with zsh-fzf
-3. `catppuccin-mocha` — default fallback
+1. **Inside tmux** — detects `#{client_theme}`:
+   - `light` → uses `VIVID_THEME_LIGHT` (default: `catppuccin-latte`)
+   - `dark` → uses `VIVID_THEME_DARK` (default: `catppuccin-mocha`)
+2. **Outside tmux** — uses `VIVID_THEME` (default: `catppuccin-mocha`)
+3. **Explicit `VIVID_THEME`** — if set, disables auto-detection
 
 ### Available Themes
 
@@ -85,14 +98,14 @@ zinit load zsh-contrib/zsh-vivid
 
 `LS_COLORS` is generated once at load time and picked up by `ls`, `tree`, `fd`, `eza`, and any other tool that reads it.
 
-### Theme Synchronization
+### Custom Light/Dark Themes
 
 ```zsh
-# Share a theme across plugins
-export FZF_THEME="catppuccin-macchiato"
+# Use custom themes for tmux light/dark modes
+export VIVID_THEME_LIGHT="rose-pine-dawn"
+export VIVID_THEME_DARK="rose-pine"
 
-zinit load zsh-contrib/zsh-fzf
-zinit load zsh-contrib/zsh-vivid   # picks up FZF_THEME automatically
+zinit load zsh-contrib/zsh-vivid
 ```
 
 ### Conditional Loading

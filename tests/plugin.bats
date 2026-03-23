@@ -48,7 +48,7 @@ PLUGIN_DIR="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
 
 @test "default theme is catppuccin-mocha" {
   run zsh -c '
-    unset FZF_THEME VIVID_THEME TMUX_THEME
+    unset VIVID_THEME VIVID_THEME_DARK VIVID_THEME_LIGHT TMUX
     vivid() { echo "$2"; }
     source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
     echo "$LS_COLORS"
@@ -57,9 +57,23 @@ PLUGIN_DIR="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
   [[ "$output" == "catppuccin-mocha" ]]
 }
 
-@test "FZF_THEME is used as the vivid theme" {
+@test "pre-set VIVID_THEME is respected" {
   run zsh -c '
-    export FZF_THEME="catppuccin-latte"
+    export VIVID_THEME="nord"
+    unset VIVID_THEME_DARK VIVID_THEME_LIGHT TMUX
+    vivid() { echo "$2"; }
+    source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
+    echo "$LS_COLORS"
+  '
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "nord" ]]
+}
+
+@test "TMUX light mode uses VIVID_THEME_LIGHT" {
+  run zsh -c '
+    export TMUX="fake"
+    unset VIVID_THEME VIVID_THEME_DARK VIVID_THEME_LIGHT
+    tmux() { echo "light"; }
     vivid() { echo "$2"; }
     source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
     echo "$LS_COLORS"
@@ -68,27 +82,55 @@ PLUGIN_DIR="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
   [[ "$output" == "catppuccin-latte" ]]
 }
 
-@test "pre-set VIVID_THEME is not preserved (FZF_THEME takes precedence)" {
-  # Documents actual behaviour: config.zsh overwrites VIVID_THEME with FZF_THEME
+@test "TMUX dark mode uses VIVID_THEME_DARK" {
   run zsh -c '
-    export VIVID_THEME="nord"
-    unset FZF_THEME
+    export TMUX="fake"
+    unset VIVID_THEME VIVID_THEME_DARK VIVID_THEME_LIGHT
+    tmux() { echo "dark"; }
     vivid() { echo "$2"; }
     source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
     echo "$LS_COLORS"
   '
   [[ "$status" -eq 0 ]]
-  # Without FZF_THEME, falls back to catppuccin-mocha regardless of VIVID_THEME
   [[ "$output" == "catppuccin-mocha" ]]
 }
 
-@test "FZF_THEME rose-pine-dawn is passed to vivid" {
+@test "custom VIVID_THEME_LIGHT is used in TMUX light mode" {
   run zsh -c '
-    export FZF_THEME="rose-pine-dawn"
+    export TMUX="fake"
+    export VIVID_THEME_LIGHT="catppuccin-frappe"
+    unset VIVID_THEME VIVID_THEME_DARK
+    tmux() { echo "light"; }
     vivid() { echo "$2"; }
     source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
     echo "$LS_COLORS"
   '
   [[ "$status" -eq 0 ]]
-  [[ "$output" == "rose-pine-dawn" ]]
+  [[ "$output" == "catppuccin-frappe" ]]
+}
+
+@test "custom VIVID_THEME_DARK is used in TMUX dark mode" {
+  run zsh -c '
+    export TMUX="fake"
+    export VIVID_THEME_DARK="nord"
+    unset VIVID_THEME VIVID_THEME_LIGHT
+    tmux() { echo "dark"; }
+    vivid() { echo "$2"; }
+    source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
+    echo "$LS_COLORS"
+  '
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "nord" ]]
+}
+
+@test "outside TMUX VIVID_THEME is used directly" {
+  run zsh -c '
+    export VIVID_THEME="molokai"
+    unset VIVID_THEME_DARK VIVID_THEME_LIGHT TMUX
+    vivid() { echo "$2"; }
+    source "$PLUGIN_DIR/zsh-vivid.plugin.zsh"
+    echo "$LS_COLORS"
+  '
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "molokai" ]]
 }
