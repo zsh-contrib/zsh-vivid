@@ -2,7 +2,7 @@
 
 > vivid LS_COLORS for Zsh — Catppuccin theming with automatic light/dark detection.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![test](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml/badge.svg)](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![CI](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/ci.yml/badge.svg)](https://github.com/zsh-contrib/zsh-vivid/actions/workflows/ci.yml)
 
 Give your file listings a consistent look across every tool that respects `LS_COLORS`. `zsh-vivid` generates and exports `LS_COLORS` via [vivid](https://github.com/sharkdp/vivid), with automatic light/dark theme detection for tmux sessions and support for custom Catppuccin and other themes.
 
