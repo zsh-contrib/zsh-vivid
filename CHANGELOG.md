@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/zsh-contrib/zsh-vivid/compare/v0.0.2...v0.0.3) (2026-11-07)
+
+
+### Bug Fixes
+
+* **ci:** merge with the App token so main gets its CI run ([#40](https://github.com/zsh-contrib/zsh-vivid/issues/40)) ([409960b](https://github.com/zsh-contrib/zsh-vivid/commit/409960b4bfaffea1ce591d8ff082ef3350d07292))
+
 ## [0.0.2](https://github.com/zsh-contrib/zsh-vivid/compare/v0.0.1...v0.0.2) (2026-05-04)
 
 
